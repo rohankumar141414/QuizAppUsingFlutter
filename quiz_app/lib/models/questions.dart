@@ -4,4 +4,10 @@ class Questions {
 
   final String quest;
   final List<String> ans;
+
+  List<String> shuffledAns() {
+    List<String> shuffledAnswer = List.of(ans);
+    shuffledAnswer.shuffle();
+    return shuffledAnswer;
+  }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quiz_app/ans_button.dart';
 import 'package:quiz_app/data/question_texts.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class QuestionsScreen extends StatefulWidget {
   const QuestionsScreen({super.key});
@@ -12,27 +13,41 @@ class QuestionsScreen extends StatefulWidget {
 }
 
 class _QuestionsScreenState extends State<QuestionsScreen> {
-  final thisQuestion = questions[0];
+  var quesIndex = 0;
+
+  void clickAns() {
+    setState(() {
+      quesIndex++;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    final thisQuestion = questions[quesIndex];
     return SizedBox(
       width: double.infinity,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            thisQuestion.quest,
-            style: const TextStyle(
-              color: Colors.white,
+      child: Container(
+        margin: const EdgeInsets.all(30),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              thisQuestion.quest,
+              style: GoogleFonts.lora(
+                fontSize: 24,
+                color: Colors.white,
+              ),
+              textAlign: TextAlign.center,
             ),
-          ),
-          const SizedBox(height: 30),
-          AnsButton(thisQuestion.ans[0], () {}),
-          AnsButton(thisQuestion.ans[1], () {}),
-          AnsButton(thisQuestion.ans[2], () {}),
-          AnsButton(thisQuestion.ans[3], () {}),
-        ],
+            const SizedBox(height: 30),
+            ...thisQuestion.shuffledAns().map(
+              (answer) {
+                return AnsButton(answer, clickAns);
+              },
+            )
+          ],
+        ),
       ),
     );
   }
