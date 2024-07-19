@@ -4,7 +4,8 @@ import 'package:quiz_app/data/question_texts.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class QuestionsScreen extends StatefulWidget {
-  const QuestionsScreen({super.key});
+  const QuestionsScreen(this.saveAns, {super.key});
+  final void Function(String answer) saveAns;
 
   @override
   State<QuestionsScreen> createState() {
@@ -15,7 +16,8 @@ class QuestionsScreen extends StatefulWidget {
 class _QuestionsScreenState extends State<QuestionsScreen> {
   var quesIndex = 0;
 
-  void clickAns() {
+  void clickAns(String ans) {
+    widget.saveAns(ans);
     setState(() {
       quesIndex++;
     });
@@ -43,7 +45,12 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
             const SizedBox(height: 30),
             ...thisQuestion.shuffledAns().map(
               (answer) {
-                return AnsButton(answer, clickAns);
+                return AnsButton(
+                  answer,
+                  () {
+                    clickAns(answer);
+                  },
+                );
               },
             )
           ],
